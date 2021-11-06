@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css"
+    />
+
+    <title>PerspectiveAngle Controller</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row g-1">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-9">
+              <label for="angleSlider" class="form-label" id="angleSliderLable">
+              </label>
+            </div>
+            <div class="col-3">
+              <button
+                for="angleSlider"
+                class="btn btn-outline-secondary btn-sm customBtn"
+                type="button"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="強制適応"
+                onclick="sliderChange()"
+              >
+                <i class="bi bi-arrow-repeat"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <input
+                type="range"
+                class="form-range"
+                min="1"
+                max="149"
+                step="1"
+                id="angleSlider"
+                onchange="sliderChange()"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-5">
+          <label for="cameraTypes" class="form-label"> カメラタイプ </label>
+        </div>
+
+        <div class="col-7">
+          <input
+            type="checkbox"
+            class="btn-check"
+            id="cameraTypes"
+            autocomplete="off"
+            onchange="typeChange(this.checked)"
+          />
+          <label
+            class="btn btn-outline-secondary btn-sm customBtn"
+            for="cameraTypes"
+            id="cameraTypesLabel"
+          >
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScriptを使用する場合 -->
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"
+      integrity="sha384-DBjhmceckmzwrnMMrjI7BvG2FmRuxQVaTfFYHgfnrdfqMhxKt445b7j3KBQLolRl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+
+  <script>
+    window.onload = function () {
+      var adskWaiter = setInterval(function () {
+        if (window.adsk) {
+          clearInterval(adskWaiter);
+          let ret = adsk.fusionSendData("htmlLoaded", "");
+          let obj = JSON.parse(ret);
+
+          angleSlider.value = Number(obj.perspectiveAngle);
+          sliderChange();
+
+          let cameraTypes = document.getElementById("cameraTypes");
+          cameraTypes.checked = obj.cameraType ? false : true;
+          typeChange(cameraTypes.checked);
+        }
+      }, 500);
+    };
+
+    function sliderChange() {
+      let label = document.getElementById("angleSliderLable");
+      label.textContent = "視点角度 " + String(angleSlider.value) + "°";
+
+      var args = {
+        value: angleSlider.value,
+      };
+      adsk.fusionSendData("sliderChange", JSON.stringify(args));
+    }
+
+    function typeChange(value) {
+      let label = document.getElementById("cameraTypesLabel");
+      label.textContent = value ? "正投影" : "パース";
+
+      var args = {
+        value: value ? "OrthographicCameraType" : "PerspectiveCameraType",
+      };
+      adsk.fusionSendData("typeChange", JSON.stringify(args));
+    }
+  </script>
+</html>

@@ -1,0 +1,13 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"addin",
+	"id":	"1506da2c-87de-4760-aea9-76bda62d547e",
+	"author": "kantoku",
+	"description":	{
+		"":	"視点角度を調整するモーダレスダイアログ"
+	},
+	"version":	"0.0.1",
+	"runOnStartup":	true,
+	"supportedOS":	"windows|mac",
+	"editEnabled":	true
+}
