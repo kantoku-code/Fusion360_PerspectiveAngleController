@@ -4,9 +4,9 @@
 	"id":	"1506da2c-87de-4760-aea9-76bda62d547e",
 	"author": "kantoku",
 	"description":	{
-		"":	"視点角度を調整するモーダレスダイアログ"
+		"":	"Adjust the perspective angle"
 	},
-	"version":	"0.0.1",
+	"version":	"0.0.2",
 	"runOnStartup":	true,
 	"supportedOS":	"windows|mac",
 	"editEnabled":	true

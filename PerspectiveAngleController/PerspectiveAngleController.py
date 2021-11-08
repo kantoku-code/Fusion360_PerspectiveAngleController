@@ -4,6 +4,20 @@ import adsk.fusion
 import traceback
 import json
 import math
+from .ktkLanguageMessage import LangMsg
+
+# Multilingual Dictionary
+msgDict = {
+    'Perspective Angle': '視点角度を調整',
+    'Adjust the perspective angle': '視点角度を調整する',
+    'Force Apply': '強制適用',
+    'Perspective Angle ': '視点角度 ',
+    'Camera Types': 'カメラタイプ',
+    'Orthographic': '正投影',
+    'Perspective': 'パース',
+}
+lm = LangMsg(msgDict, adsk.core.UserLanguages.JapaneseLanguage)
+
 
 handlers = []
 _app: adsk.core.Application = None
@@ -11,8 +25,8 @@ _ui: adsk.core.UserInterface = None
 
 _cmdInfo = {
     'id': 'PerspectiveAngleControllerCmd',
-    'name': '視点角度を調整',
-    'tooltip': '視点角度を調整する',
+    'name': lm.sLng('Perspective Angle'),
+    'tooltip': lm.sLng('Adjust the perspective angle'),
     'resources': ''
 }
 
@@ -70,6 +84,11 @@ class MyHTMLEventHandler(adsk.core.HTMLEventHandler):
                     'action': 'send',
                     'perspectiveAngle': str(math.degrees(cam.perspectiveAngle)),
                     'cameraType': cam.cameraType,
+                    'forcedButtonTitle': lm.sLng('Forced application'),
+                    'cameraTypesFromLabel': lm.sLng('Camera Types'),
+                    'angleSliderLable': lm.sLng('Perspective Angle '),
+                    'orthographicCamera': lm.sLng('Orthographic'),
+                    'perspectiveCamera': lm.sLng('Perspective'),
                 })
                 # dumpCameraInfo()
 

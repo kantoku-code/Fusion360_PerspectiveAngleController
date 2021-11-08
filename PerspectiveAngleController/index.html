@@ -36,6 +36,7 @@
                 for="angleSlider"
                 class="btn btn-outline-secondary btn-sm customBtn"
                 type="button"
+                id ="forcedButton"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="強制適応"
@@ -64,7 +65,13 @@
 
       <div class="row">
         <div class="col-5">
-          <label for="cameraTypes" class="form-label"> カメラタイプ </label>
+          <label
+            for="cameraTypes"
+            class="form-label"
+            id="cameraTypesFromLabel"
+          > 
+            camera types
+          </label>
         </div>
 
         <div class="col-7">
@@ -94,6 +101,10 @@
   </body>
 
   <script>
+    let angleSliderLable = ""
+    let orthographicCamera = ""
+    let perspectiveCamera = ""
+
     window.onload = function () {
       var adskWaiter = setInterval(function () {
         if (window.adsk) {
@@ -101,19 +112,29 @@
           let ret = adsk.fusionSendData("htmlLoaded", "");
           let obj = JSON.parse(ret);
 
+          angleSliderLable = obj.angleSliderLable
+          orthographicCamera = obj.orthographicCamera
+          perspectiveCamera = obj.perspectiveCamera
+
           angleSlider.value = Number(obj.perspectiveAngle);
           sliderChange();
 
           let cameraTypes = document.getElementById("cameraTypes");
           cameraTypes.checked = obj.cameraType ? false : true;
           typeChange(cameraTypes.checked);
+
+          let forcedButton = document.getElementById("forcedButton")
+          forcedButton.title = obj.forcedButtonTitle
+
+          let cameraTypesFromLabel = document.getElementById("cameraTypesFromLabel")
+          cameraTypesFromLabel.textContent = obj.cameraTypesFromLabel
         }
       }, 500);
     };
 
     function sliderChange() {
       let label = document.getElementById("angleSliderLable");
-      label.textContent = "視点角度 " + String(angleSlider.value) + "°";
+      label.textContent = angleSliderLable + String(angleSlider.value) + "°";
 
       var args = {
         value: angleSlider.value,
@@ -123,7 +144,7 @@
 
     function typeChange(value) {
       let label = document.getElementById("cameraTypesLabel");
-      label.textContent = value ? "正投影" : "パース";
+      label.textContent = value ? orthographicCamera : perspectiveCamera;
 
       var args = {
         value: value ? "OrthographicCameraType" : "PerspectiveCameraType",
