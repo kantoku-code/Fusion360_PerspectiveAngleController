@@ -36,7 +36,7 @@
                 for="angleSlider"
                 class="btn btn-outline-secondary btn-sm customBtn"
                 type="button"
-                id ="forcedButton"
+                id="forcedButton"
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="強制適応"
@@ -65,12 +65,8 @@
 
       <div class="row">
         <div class="col-5">
-          <label
-            for="cameraTypes"
-            class="form-label"
-            id="cameraTypesFromLabel"
-          > 
-            camera types
+          <label for="cameraTypes" class="form-label" id="cameraTypesFromLabel">
+            カメラタイプ
           </label>
         </div>
 
@@ -101,36 +97,39 @@
   </body>
 
   <script>
-    let angleSliderLable = ""
-    let orthographicCamera = ""
-    let perspectiveCamera = ""
+    let angleSliderLable = "";
+    let orthographicCamera = "";
+    let perspectiveCamera = "";
 
-    window.onload = function () {
-      var adskWaiter = setInterval(function () {
+    document.addEventListener("DOMContentLoaded", () => {
+      let adskWaiter = setInterval(() => {
         if (window.adsk) {
           clearInterval(adskWaiter);
-          let ret = adsk.fusionSendData("htmlLoaded", "");
-          let obj = JSON.parse(ret);
 
-          angleSliderLable = obj.angleSliderLable
-          orthographicCamera = obj.orthographicCamera
-          perspectiveCamera = obj.perspectiveCamera
+          adsk.fusionSendData("htmlLoaded", "").then((ret) => {
+            let obj = JSON.parse(ret);
+            angleSliderLable = obj.angleSliderLable;
+            orthographicCamera = obj.orthographicCamera;
+            perspectiveCamera = obj.perspectiveCamera;
 
-          angleSlider.value = Number(obj.perspectiveAngle);
-          sliderChange();
+            angleSlider.value = Number(obj.perspectiveAngle);
+            sliderChange();
 
-          let cameraTypes = document.getElementById("cameraTypes");
-          cameraTypes.checked = obj.cameraType ? false : true;
-          typeChange(cameraTypes.checked);
+            let cameraTypes = document.getElementById("cameraTypes");
+            cameraTypes.checked = obj.cameraType ? false : true;
+            typeChange(cameraTypes.checked);
 
-          let forcedButton = document.getElementById("forcedButton")
-          forcedButton.title = obj.forcedButtonTitle
+            let forcedButton = document.getElementById("forcedButton");
+            forcedButton.title = obj.forcedButtonTitle;
 
-          let cameraTypesFromLabel = document.getElementById("cameraTypesFromLabel")
-          cameraTypesFromLabel.textContent = obj.cameraTypesFromLabel
+            let cameraTypesFromLabel = document.getElementById(
+              "cameraTypesFromLabel"
+            );
+            cameraTypesFromLabel.textContent = obj.cameraTypesFromLabel;
+          }, 100);
         }
-      }, 500);
-    };
+      });
+    });
 
     function sliderChange() {
       let label = document.getElementById("angleSliderLable");

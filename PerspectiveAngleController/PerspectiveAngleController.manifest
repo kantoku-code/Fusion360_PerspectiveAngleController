@@ -6,7 +6,7 @@
 	"description":	{
 		"":	"Adjust the perspective angle"
 	},
-	"version":	"0.0.2",
+	"version":	"0.0.3",
 	"runOnStartup":	true,
 	"supportedOS":	"windows|mac",
 	"editEnabled":	true

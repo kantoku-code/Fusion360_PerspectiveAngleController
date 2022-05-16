@@ -39,7 +39,7 @@ _paletteInfo = {
     'isResizable': True,
     'width': 300,
     'height': 180,
-    'useNewWebBrowser': False,  # True,
+    'useNewWebBrowser': True,
     'dockingState': None
 }
 
